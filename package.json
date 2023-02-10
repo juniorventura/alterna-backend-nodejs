@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc",
     "start": "node ./build/index.js",
-    "dev": "ts-node-dev ./src/index.ts"
+    "dev": "ts-node-dev --exit-child ./src/index.ts"
   },
   "keywords": [],
   "author": "",

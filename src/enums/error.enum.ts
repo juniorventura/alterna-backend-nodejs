@@ -1,0 +1,6 @@
+export enum AlternaErrorEnum {
+    NOT_FOUND = "NOT_FOUND",
+    MISSING_FIELD = "MISSING_FIELD",
+    INVALID_VALUE = "INVALID_VALUE",
+    BAD_REQUEST = "BAD_REQUEST"
+}

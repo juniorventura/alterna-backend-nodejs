@@ -4,6 +4,8 @@ import employeesRoute from './routes/employees.routes';
 // Create instance of express js
 const app = express();
 
+(BigInt.prototype as any).toJSON = function() { return this.toString() }
+
 // set config to use JSON format for the api
 app.use(express.json());
 
