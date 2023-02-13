@@ -43,4 +43,49 @@ export const createEmployeeQuery = async (employee: employees) => {
     }
 }
 
+export const updateEmployeeQuery = async (employee: employees) => {
+    try {
+        const employeeId = employee.employee_id;
+        const data = {...employee} as any;
+        delete data.employee_id;
+        
+        return await prisma.employees.update({
+            where: {
+                employee_id: employeeId
+            },
+            data
+        });
+    } catch (error) {
+        throw new Error(error as string);
+    }
+}
+
+export const existEmployeeWithFirstNameAndLastName = async (lastName: string, firstName: string) => {
+    try {
+        return await prisma.employees.findFirst({
+            where: {
+                last_name: lastName,
+                AND: {
+                    first_name: firstName
+                }
+            }
+        });
+    } catch (error) {
+        throw new Error(error as string);
+    }
+}
+
+export const deleteEmployeeQuery = async (id: number) => {
+    try {
+        return await prisma.employees.delete({
+            where: {
+                employee_id: id
+            }
+        });
+    } catch (error) {
+        throw new Error(error as string);
+    }
+}
+
+
 

@@ -1,6 +1,6 @@
-import { employees } from "@prisma/client";
+import { employees, employee_territories } from "@prisma/client";
 import { AlternaErrorEnum } from "../enums/error.enum";
-import { createEmployeeQuery, getEmployeeByIdQuery, getEmployeesQuery } from "../queries/employees.queries"
+import { createEmployeeQuery, deleteEmployeeQuery, existEmployeeWithFirstNameAndLastName, getEmployeeByIdQuery, getEmployeesQuery, updateEmployeeQuery } from "../queries/employees.queries"
 import { CustomError } from "../utils/errorHandler.util";
 
 export const getEmployees = async () => {
@@ -47,4 +47,41 @@ export const createEmployee = async (employee: employees) => {
 
     return await createEmployeeQuery(employee);
 
+}
+
+
+
+
+export const updateEmployees = async (employee: employees) => {
+    /**
+     * Bussiness logic
+     * Validation before update
+     */
+
+    const foundEmployee = await existEmployeeWithFirstNameAndLastName(employee.last_name, employee.first_name);
+
+    if (!!foundEmployee && foundEmployee.employee_id != employee.employee_id) {
+        throw new CustomError({
+            name: AlternaErrorEnum.BAD_REQUEST,
+            message: "The first name and lastname already exist."
+        })
+    }   
+
+    return await updateEmployeeQuery(employee);
+}
+
+export const deleteEmployeeById = async (id: number) => {
+    /**
+     * Bussiness logic
+     */
+    if (id <= 0) {
+        // TODO: Create custom error
+        throw new Error("The id must be greater than 0.");
+    }
+    const employee = await getEmployeeByIdQuery(id);
+    if (!employee) {
+        throw new Error(`Employee was not found for the id: ${id}`);
+    }
+
+    return await deleteEmployeeQuery(id);
 }
